@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 use Atomjoy\Socialites\Events\UserCreated;
 use Atomjoy\Socialites\Events\UserLogged;
+use Illuminate\Support\Facades\Validator;
 
 class OauthLogin extends Controller
 {
@@ -62,6 +63,15 @@ class OauthLogin extends Controller
 		$this->checkDriver();
 
 		$oauthUser = Socialite::driver($driver)->stateless()->user();
+
+		$validator = Validator::make(['email' => $oauthUser->email], [
+			'email' => 'required|email:rfc,dns'
+		]);
+
+		if ($validator->fails()) {
+			throw new \Exception("Invalid email address.", 422);
+		}
+
 		$user = User::where('email', $oauthUser->email)->first();
 		if (!$user) {
 			$user = User::create([
@@ -87,11 +97,21 @@ class OauthLogin extends Controller
 		$token = request()->input('token');
 		$client = config('services.google.client_id');
 		$res = Http::get("https://oauth2.googleapis.com/tokeninfo", ["id_token" => $token]);
+
 		if ($res->ok()) {
 			$arr = $res->json();
 			if ($arr['aud'] != $client) {
 				return redirect(config('services.google.homepage', '/'));
 			}
+
+			$validator = Validator::make(['email' => $arr['email']], [
+				'email' => 'required|email:rfc,dns'
+			]);
+
+			if ($validator->fails()) {
+				throw new \Exception("Invalid email address.", 422);
+			}
+
 			$user = User::where('email', $arr['email'])->first();
 			if (!$user) {
 				$user = User::create([
