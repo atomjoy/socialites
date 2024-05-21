@@ -117,7 +117,7 @@
 		}
 		window.onload = function () {
 			google.accounts.id.initialize({
-				client_id: "{{ config('socialites.google.client_id') }}", // Replace with your Google Client ID
+				client_id: "{{ config('services.google.client_id') }}", // Replace with your Google Client ID
 				callback: handleCredentialResponse // We choose to handle the callback in client side, so we include a reference to a function that will handle the response
 			});
 			// Enable Google "Sign-in" button
