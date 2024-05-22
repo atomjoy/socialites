@@ -87,7 +87,7 @@
 	@if (Auth::check())
 	<div id="oauth__user">
 		<span>{{ Auth::user()->name }}</span>
-		<a href="/oauth/google/logout" id="oauth__logout">{{ trans('Logout') }}</a>
+		<a href="/oauth/logout" id="oauth__logout">{{ trans('Logout') }}</a>
 	</div>
 	@else
 	<a href="/oauth/google/redirect" title="{{ trans('Sign in with Google') }}">

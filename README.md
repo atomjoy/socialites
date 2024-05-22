@@ -10,16 +10,19 @@ Add package and routes.
 composer require "atomjoy/socialites"
 ```
 
-## Callbacks
+## Callbacks and local domain
 
-Change the callback domain.
+Change the callback domain, set the local domain to example.org and add ssl.
 
 ```sh
-# Google
+# Google callback
 https://example.org/oauth/google/callback
 
-# Github
+# Github callback
 https://example.org/oauth/github/callback
+
+# How to set local domain and SSL for example.org (xampp)
+https://github.com/atomjoy/xampp
 ```
 
 ## Create Google project
@@ -91,7 +94,7 @@ return [
 ```html
 @if (Auth::check())
     <div>{{ Auth::user()->name }}</div>
-    <a href="/oauth/google/logout" title="Logout">{{ trans('Logout') }}</a>
+    <a href="/oauth/logout" title="Logout">{{ trans('Logout') }}</a>
 @else
     <a href="/oauth/google/redirect" title="Google">{{ trans('Login with Google') }}</a>
     <a href="/oauth/github/redirect" title="Github">{{ trans('Login with Github') }}</a>

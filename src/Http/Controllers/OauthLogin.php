@@ -1,5 +1,6 @@
 <?php
 
+
 namespace Atomjoy\Socialites\Http\Controllers;
 
 use App\Models\User;
@@ -34,7 +35,9 @@ class OauthLogin extends Controller
 	public function logout($driver = 'google')
 	{
 		Auth::logout();
+
 		$this->checkDriver();
+
 		return redirect(config('services.' . $driver . '.homepage', '/'));
 	}
 
@@ -46,6 +49,7 @@ class OauthLogin extends Controller
 	public function redirect($driver = 'google')
 	{
 		$this->checkDriver();
+
 		return Socialite::driver($driver)->redirect();
 	}
 
@@ -57,13 +61,17 @@ class OauthLogin extends Controller
 	public function callback($driver = 'google')
 	{
 		$this->checkDriver();
-		$oauthUser = Socialite::driver($driver)->stateless()->user();		
+
+		$oauthUser = Socialite::driver($driver)->stateless()->user();
+
 		$validator = Validator::make(['email' => $oauthUser->email], [
 			'email' => 'required|email:rfc,dns'
 		]);
+
 		if ($validator->fails()) {
 			throw new \Exception("Invalid email address.", 422);
 		}
+
 		$user = User::where('email', $oauthUser->email)->first();
 		if (!$user) {
 			$user = User::create([
@@ -72,6 +80,7 @@ class OauthLogin extends Controller
 				'password' => Hash::make(md5(uniqid() . microtime())),
 				'email_verified_at' => now(), // Add in User fillable
 			]);
+
 			UserCreated::dispatch($user);
 		}
 		Auth::login($user);
@@ -84,20 +93,25 @@ class OauthLogin extends Controller
 		if ($driver != 'google') {
 			return redirect(config('services.google.homepage', '/'));
 		}
+
 		$token = request()->input('token');
 		$client = config('services.google.client_id');
 		$res = Http::get("https://oauth2.googleapis.com/tokeninfo", ["id_token" => $token]);
+
 		if ($res->ok()) {
 			$arr = $res->json();
 			if ($arr['aud'] != $client) {
 				return redirect(config('services.google.homepage', '/'));
 			}
+
 			$validator = Validator::make(['email' => $arr['email']], [
 				'email' => 'required|email:rfc,dns'
 			]);
+
 			if ($validator->fails()) {
 				throw new \Exception("Invalid email address.", 422);
 			}
+
 			$user = User::where('email', $arr['email'])->first();
 			if (!$user) {
 				$user = User::create([
@@ -106,6 +120,7 @@ class OauthLogin extends Controller
 					'password' => Hash::make(md5(uniqid() . microtime())),
 					'email_verified_at' => now(), // Add in User fillable
 				]);
+
 				UserCreated::dispatch($user);
 			}
 			Auth::login($user);
