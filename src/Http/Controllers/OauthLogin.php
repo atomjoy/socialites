@@ -32,13 +32,11 @@ class OauthLogin extends Controller
 	 *
 	 * @return void
 	 */
-	public function logout($driver = 'google')
+	public function logout()
 	{
 		Auth::logout();
 
-		$this->checkDriver();
-
-		return redirect(config('services.' . $driver . '.homepage', '/'));
+		return redirect('/');
 	}
 
 	/**
