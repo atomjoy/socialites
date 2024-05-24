@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scrollbar-thin" data-theme="dark">
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -91,13 +92,13 @@
 	@else
 	<a href="/oauth/google/redirect" title="{{ trans('Sign in with Google') }}">
 		<div class="google-button">
-			<img src="storage/icons8-google.png" alt="Login with Google">
+			<img src="vendor/socialites/icons8-google.png" alt="Login with Google">
 			<span> {{ trans('Sign in with Google') }} </span>
 		</div>
 	</a>
 	<a href="/oauth/github/redirect" title="{{ trans('Sign in with Github') }}">
 		<div class="github-button">
-			<img src="storage/icons8-github.png" alt="Login with Github">
+			<img src="vendor/socialites/icons8-github.png" alt="Login with Github">
 			<span> {{ trans('Sign in with Github') }} </span>
 		</div>
 	</a>

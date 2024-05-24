@@ -21,6 +21,14 @@ class SocialitesServiceProvider extends ServiceProvider
 			$this->publishes([
 				__DIR__ . '/../config/config.php' => config_path('socialites.php'),
 			], 'socialites-config');
+
+			$this->publishes([
+				__DIR__ . '/../resources/views' => resource_path('views/vendor/socialites')
+			], 'socialites-views');
+
+			$this->publishes([
+				__DIR__ . '/../storage/app/public' => public_path('vendor/socialites')
+			], 'socialites-assets');
 		}
 	}
 }

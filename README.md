@@ -91,6 +91,8 @@ return [
 
 ## Login buttons
 
+return view('socialites::login-buttons');
+
 ```html
 @if (Auth::check())
     <div>{{ Auth::user()->name }}</div>
@@ -102,6 +104,8 @@ return [
 ```
 
 ## Javascript Google One Tap dialog and button (optional)
+
+return view('socialites::login-onetap');
 
 ```html
 @if (!Auth::check())
@@ -136,10 +140,32 @@ return [
 @endif
 ```
 
-## Server
+## Run server
 
 ```sh
 php artisan serve --host=localhost --port=8000
+```
+
+## Publish assets
+
+```sh
+# Copy Icons
+php artisan vendor:publish --tag=socialites-assets --force
+
+# Edit Views
+php artisan vendor:publish --tag=socialites-views --force
+
+# Create config example config/socialites.php
+php artisan vendor:publish --tag=socialites-config --force
+```
+
+## Events
+
+```php
+<?php
+
+use Atomjoy\Socialites\Events\UserLogged;
+use Atomjoy\Socialites\Events\UserCreated;
 ```
 
 ## Add more drivers in the configuration file
@@ -161,21 +187,4 @@ return [
 
     'oauth_drivers' => ['github', 'google', 'facebook'],
 ];
-```
-
-## Events
-
-```php
-<?php
-
-use Atomjoy\Socialites\Events\UserLogged;
-use Atomjoy\Socialites\Events\UserCreated;
-```
-
-## Config example (not used)
-
-config/socialites.php
-
-```sh
-php artisan vendor:publish --tag=socialites-config --force
 ```
