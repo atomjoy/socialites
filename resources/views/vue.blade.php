@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Laravel Socialites</title>
+	<title>Laravel Socialites Vue3 Example</title>
 
 	<meta name="description" content="Google and github Login with Laravel Socialite.">
 	<meta name="keywords" content="laravel, socialite">
