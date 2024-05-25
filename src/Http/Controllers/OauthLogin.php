@@ -108,6 +108,12 @@ class OauthLogin extends Controller
 				return redirect(config('services.google.homepage', '/'));
 			}
 
+			if ($driver == 'google') {
+				if ($arr['email_verified'] != true) {
+					throw new \Exception("Not confirmed email address.", 422);
+				}
+			}
+
 			$validator = Validator::make(['email' => $arr['email']], [
 				'email' => 'required|email:rfc,dns'
 			]);
